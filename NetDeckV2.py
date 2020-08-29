@@ -95,11 +95,11 @@ def make_deck(cards, land_avg, basic_avg, c_colors, c_name):  # where the magic 
     return deck
 
 
-def get_basics(playables_colors, basics_left): # kinda gross looking tbh
+def get_basics(playables_colors, basics_left): #get the basic lands since
     red, blue, green, white, black = 0, 0, 0, 0, 0
     here_be_basics = []
     total_basics = basics_left
-    print(playables_colors)
+    
     if not playables_colors: #if you are in colorless for some reason
         while basics_left > 0:
             here_be_basics.append('Wastes')
