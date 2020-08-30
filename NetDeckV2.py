@@ -36,12 +36,14 @@ def make_deck(cards, land_avg, basic_avg, c_colors, c_name):  # where the magic 
     non_basics_left = lands_left - basics_left
     playables_left = 99 - lands_left
 
-    basics = [sub.replace('G', 'Forest') for sub in c_colors]
-    basics = [sub.replace('B', 'Swamp') for sub in basics]
-    basics = [sub.replace('R', 'Mountain') for sub in basics]
-    basics = [sub.replace('U', 'Island') for sub in basics]
-    basics = [sub.replace('W', 'Plains') for sub in basics]
-    basics = [sub.replace('', 'Wastes') for sub in basics]
+    basic_land_types = {
+        'G': 'Forest',
+        'B': 'Swamp',
+        'R': 'Mountain',
+        'U': 'Island',
+        'W': 'Plains'}
+    basics = list(map(lambda e: basic_land_types[e], c_colors))
+    if not basics: basics = ['Wastes']
 
     for card in cards:  # Find auto includes
         if card.percent >= 50 and card.type != "Land" and playables_left > 0 and card.name != c_name:
@@ -69,7 +71,7 @@ def make_deck(cards, land_avg, basic_avg, c_colors, c_name):  # where the magic 
                     non_basics_left -= 1
                     cards.remove(card)
 
-    playables_colors =[]
+    playables_colors = []
     for playable in playables:
         if not playable.colors:
             continue
@@ -95,11 +97,11 @@ def make_deck(cards, land_avg, basic_avg, c_colors, c_name):  # where the magic 
     return deck
 
 
-def get_basics(playables_colors, basics_left): #get the basic lands since
+def get_basics(playables_colors, basics_left):
     red, blue, green, white, black = 0, 0, 0, 0, 0
     here_be_basics = []
     total_basics = basics_left
-    
+
     if not playables_colors: #if you are in colorless for some reason
         while basics_left > 0:
             here_be_basics.append('Wastes')
@@ -217,6 +219,7 @@ def get_url():
     commander = commander.replace("'", '').lower()
 
     URL = "https://edhrec-json.s3.amazonaws.com/en/commanders/" + commander + ".json"
+
     return URL
 
 
